@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+<script>
+    var evtSource = new EventSource("event.py");
+
+    evtSource.addEventListener("ping", function(e) {
+        console.log(e);
+    }, false);
+    evtSource.onerror = function(e) {
+        alert("EventSource failed.");
+        evtSource.close();
+    };
+</script>
+</body>
+</html>
