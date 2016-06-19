@@ -13,6 +13,10 @@
 
     <style type="text/css">
         <!--
+        body {
+            background-color: #000;
+        }
+
         .row-margin {
             height: 4.17vw;
         }
@@ -92,6 +96,12 @@
             bottom: 0;
         }
 
+        .text-position-right-top {
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+
         .text-position-left-bottom-sub {
             position: absolute;
             left: 0;
@@ -111,19 +121,102 @@
             text-overflow: ellipsis;
         }
 
+        .content-no-scroll {
+            overflow: hidden;
+        }
+
+        .page-whiteout {
+            animation: whiteout 1s ease 0s 1;
+        }
+
+        .page-fadeout {
+            animation: fadeout 1s ease 0s 1;
+        }
+
+        .page-full {
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            position: fixed;
+            right: 0;
+            top: 0;
+        }
+
+        @keyframes whiteout {
+            0% {
+                background-color: #000;
+                opacity: 0;
+            }
+            100% {
+                background-color: #AAA;
+                opacity: 1;
+            }
+        }
+
+        @-webkit-keyframes whiteout {
+            0% {
+                background-color: #000;
+                opacity: 0;
+            }
+            100% {
+                background-color: #AAA;
+                opacity: 1;
+            }
+        }
+
+        @-moz-keyframes whiteout {
+            0% {
+                background-color: #000;
+                opacity: 0;
+            }
+            100% {
+                background-color: #AAA;
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeout {
+            0% {
+                background-color: #AAA;
+                opacity: 1;
+            }
+            100% {
+                background-color: #000;
+                opacity: 0;
+            }
+        }
+
+        @-webkit-keyframes fadeout {
+            0% {
+                background-color: #AAA;
+                opacity: 1;
+            }
+            100% {
+                background-color: #000;
+                opacity: 0;
+            }
+        }
+
+        @-moz-keyframes fadeout {
+            0% {
+                background-color: #AAA;
+                opacity: 1;
+            }
+            100% {
+                background-color: #000;
+                opacity: 0;
+            }
+        }
+
         -->
     </style>
 </head>
 <body>
 
-<div style="position: fixed;">
-    <button id="btn-debug-page-change" class="btn btn-info">page change</button>
-</div>
-
 <header>
     <div class="row-margin"></div>
 </header>
-<div class="container-fluid">
+<div class="content-no-scroll container-fluid">
     <div id="page-1">
         <div class="row row-2">
             <div class="col-lg-offset-2 col-lg-2" style="height: 100%;">
@@ -137,13 +230,13 @@
                 </div>
             </div>
         </div>
-        <div class="row row-1">
+        <div class="row row-margin">
             <div class="col-lg-12"></div>
         </div>
-        <div class="row row-3">
+        <div class="row row-4">
             <div class="col-lg-offset-1 col-lg-4">
-                <div class="row row-3">
-                    <div class="font-size-3 text-position-right-bottom"><i id="weather_icon" class="wi wi-na"></i>
+                <div class="row row-4">
+                    <div class="font-size-3 text-position-right-top"><i id="weather_icon" class="wi wi-na"></i>
                     </div>
                 </div>
             </div>
@@ -180,7 +273,7 @@
                 <div id="news_title" class="font-color-label font-size-middle"></div>
             </div>
         </div>
-        <div class="row row-1">
+        <div class="row row-margin">
             <div class="col-lg-12"></div>
         </div>
         <div class="row row-4">
@@ -233,9 +326,18 @@
     <div class="row-margin"></div>
 </footer>
 
-<div>
+<div id="full" class="page-full"></div>
 
+<div style="position: fixed; top: 0;">
+    <button id="btn-debug-page-change" class="btn btn-info">page change</button>
 </div>
+
+<script>
+    // CONST
+    var RELOAD_INTERVAL_TIME = 300000;
+    var CLOCK_INTERVAL_TIME = 1000;
+    var PAGE_CHANGE_DURATION = 1000;
+</script>
 
 <script>
     // Clock
@@ -297,7 +399,7 @@
             clockTimeSep.removeClass("font-color-sub");
             clockTimeSep.addClass("font-color-main");
         }
-    }, 1000);
+    }, CLOCK_INTERVAL_TIME);
 </script>
 
 <script>
@@ -429,7 +531,7 @@
         );
     }
     getWeather();
-    var weather = setInterval(getWeather, 300000);
+    var weather = setInterval(getWeather, RELOAD_INTERVAL_TIME);
 </script>
 
 <script>
@@ -465,16 +567,197 @@
                 }
         );
     }
-
     getNews();
-    var weather = setInterval(getNews, 300000);
+    var news = setInterval(getNews, RELOAD_INTERVAL_TIME);
+</script>
+
+<script>
+    var page1 = $('#page-1');
+    var page2 = $('#page-2');
+    var full = $('#full');
+
+    function getCurrentPage() {
+        if (page1.is(':visible')) {
+            return 1;
+        } else if (page2.is(':visible')) {
+            return 2;
+        } else {
+            return 0;
+        }
+    }
+
+    function showPage1() {
+        var d = new $.Deferred;
+        setTimeout(function () {
+            page1.show();
+            page2.hide();
+
+            d.resolve();
+        }, 0);
+
+        return d.promise();
+    }
+
+    function showPage2() {
+        var d = new $.Deferred;
+        setTimeout(function () {
+            page1.hide();
+            page2.show();
+
+            d.resolve();
+        }, 0);
+
+        return d.promise();
+    }
+
+    function hideAll() {
+        var d = new $.Deferred;
+        setTimeout(function () {
+            page1.hide();
+            page2.hide();
+
+            d.resolve();
+        }, 0);
+
+        return d.promise();
+    }
+
+    function fullWhiteout() {
+        full.addClass("page-whiteout");
+
+        var d = new $.Deferred;
+        setTimeout(function () {
+            d.resolve();
+        }, PAGE_CHANGE_DURATION);
+
+        return d.promise();
+    }
+
+    function fullFadeout() {
+        full.addClass("page-fadeout");
+
+        var d = new $.Deferred;
+        setTimeout(function () {
+            full.removeClass("page-whiteout");
+            full.removeClass("page-fadeout");
+            d.resolve();
+        }, PAGE_CHANGE_DURATION);
+
+        return d.promise();
+    }
+
+    $('#btn-debug-page-change').click(function () {
+        fullWhiteout()
+                .then(function () {
+                            if (page1.is(':visible')) {
+                                return showPage2();
+                            } else {
+                                return showPage1();
+                            }
+                        }
+                )
+                .then(
+                        fullFadeout
+                )
+        ;
+    });
+
+    hideAll();
 </script>
 
 <script>
     // SSE
     var evtSource = new EventSource("event.py");
-    evtSource.addEventListener("ping", function (e) {
-        console.log(e);
+
+    // [Page2 reload] <- [Page2] <-> [Blank] <-> [Page1] -> [Page1 reload]
+
+    function touchLeftPad() {
+        fullWhiteout()
+                .then(function () {
+                            switch (getCurrentPage()) {
+                                case 0:
+                                    return showPage2();
+                                    break;
+                                case 1:
+                                    return hideAll();
+                                    break;
+                                case 2:
+                                    return function () {
+                                        var d = new $.Deferred;
+                                        setTimeout(function () {
+                                            getNews();
+                                            clearInterval(news);
+                                            news = setInterval(getNews, RELOAD_INTERVAL_TIME);
+                                            d.resolve();
+                                        }, 0);
+
+                                        return d.promise();
+                                    };
+                                    break;
+                                default:
+                                    return hideAll();
+                            }
+                        }
+                )
+                .then(
+                        fullFadeout
+                )
+        ;
+
+    }
+
+    function touchRightPad() {
+
+        fullWhiteout()
+                .then(function () {
+                            switch (getCurrentPage()) {
+                                case 0:
+                                    return showPage1();
+                                    break;
+                                case 1:
+                                    return function () {
+                                        var d = new $.Deferred;
+                                        setTimeout(function () {
+                                            getWeather();
+                                            clearInterval(weather);
+                                            weather = setInterval(getWeather, RELOAD_INTERVAL_TIME);
+                                            d.resolve();
+                                        }, 0);
+
+                                        return d.promise();
+                                    };
+                                    break;
+                                case 2:
+                                    return hideAll();
+                                    break;
+                                default:
+                                    return hideAll();
+                            }
+                        }
+                )
+                .then(
+                        fullFadeout
+                )
+        ;
+    }
+
+    evtSource.addEventListener("touch_l1", function (e) {
+        touchLeftPad();
+    }, false);
+    evtSource.addEventListener("touch_l2", function (e) {
+        touchLeftPad();
+    }, false);
+    evtSource.addEventListener("touch_l3", function (e) {
+        touchLeftPad();
+    }, false);
+    evtSource.addEventListener("touch_r1", function (e) {
+        touchRightPad();
+    }, false);
+    evtSource.addEventListener("touch_r2", function (e) {
+        touchRightPad();
+    }, false);
+    evtSource.addEventListener("touch_r3", function (e) {
+        touchRightPad();
     }, false);
     evtSource.onerror = function (e) {
         alert("EventSource failed.");
@@ -482,30 +765,5 @@
     };
 </script>
 
-<script>
-    var page1 = $('#page-1');
-    var page2 = $('#page-2');
-
-    function showPage1() {
-        page1.show();
-        page2.hide();
-    }
-
-    function showPage2() {
-        page1.hide();
-        page2.show();
-    }
-
-
-    $('#btn-debug-page-change').click(function () {
-        if (page1.is(':visible')) {
-            showPage2();
-        } else {
-            showPage1();
-        }
-    });
-
-    showPage1();
-</script>
 </body>
 </html>
