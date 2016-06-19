@@ -133,6 +133,10 @@
             animation: fadeout 1s ease 0s 1;
         }
 
+        .page-fadein {
+            animation: fadein 1s ease 0s 1;
+        }
+
         .page-full {
             width: 100%;
             height: 100%;
@@ -177,34 +181,56 @@
 
         @keyframes fadeout {
             0% {
-                background-color: #AAA;
                 opacity: 1;
             }
             100% {
-                background-color: #000;
                 opacity: 0;
             }
         }
 
         @-webkit-keyframes fadeout {
             0% {
-                background-color: #AAA;
                 opacity: 1;
             }
             100% {
-                background-color: #000;
                 opacity: 0;
             }
         }
 
         @-moz-keyframes fadeout {
             0% {
-                background-color: #AAA;
                 opacity: 1;
             }
             100% {
-                background-color: #000;
                 opacity: 0;
+            }
+        }
+
+
+        @keyframes fadein {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @-webkit-keyframes fadein {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @-moz-keyframes fadein {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
             }
         }
 
@@ -216,7 +242,7 @@
 <header>
     <div class="row-margin"></div>
 </header>
-<div class="content-no-scroll container-fluid">
+<div id="contents" class="content-no-scroll container-fluid">
     <div id="page-1">
         <div class="row row-2">
             <div class="col-lg-offset-2 col-lg-2" style="height: 100%;">
@@ -572,6 +598,7 @@
     var page1 = $('#page-1');
     var page2 = $('#page-2');
     var full = $('#full');
+    var contents = $("#contents");
 
     function getCurrentPage() {
         if (page1.is(':visible')) {
@@ -619,8 +646,8 @@
         return d.promise();
     }
 
-    function fullWhiteout() {
-        full.addClass("page-whiteout");
+    function fullFadeout() {
+        contents.addClass("page-fadeout");
 
         var d = new $.Deferred;
         setTimeout(function () {
@@ -630,13 +657,13 @@
         return d.promise();
     }
 
-    function fullFadeout() {
-        full.addClass("page-fadeout");
+    function fullFadein() {
+        contents.addClass("page-fadein");
 
         var d = new $.Deferred;
         setTimeout(function () {
-            full.removeClass("page-whiteout");
-            full.removeClass("page-fadeout");
+            contents.removeClass("page-fadeout");
+            contents.removeClass("page-fadein");
             d.resolve();
         }, PAGE_CHANGE_DURATION);
 
@@ -644,7 +671,7 @@
     }
 
     $('#btn-debug-page-change').click(function () {
-        fullWhiteout()
+        fullFadeout()
                 .then(function () {
                             if (page1.is(':visible')) {
                                 return showPage2();
@@ -654,7 +681,7 @@
                         }
                 )
                 .then(
-                        fullFadeout
+                        fullFadein
                 )
         ;
     });
@@ -669,7 +696,7 @@
     // [Page2 reload] <- [Page2] <-> [Blank] <-> [Page1] -> [Page1 reload]
 
     function touchLeftPad() {
-        fullWhiteout()
+        fullFadeout()
                 .then(function () {
                             switch (getCurrentPage()) {
                                 case 0:
@@ -697,15 +724,14 @@
                         }
                 )
                 .then(
-                        fullFadeout
+                        fullFadein
                 )
         ;
 
     }
 
     function touchRightPad() {
-
-        fullWhiteout()
+        fullFadeout()
                 .then(function () {
                             switch (getCurrentPage()) {
                                 case 0:
@@ -733,30 +759,61 @@
                         }
                 )
                 .then(
-                        fullFadeout
+                        fullFadein
                 )
         ;
     }
 
+    // タッチイベント制御用
+    // タッチ検知から2秒間は次のタッチを受け付けない。
+    var touchEventMutex = null;
+
+    function setTouchEventMutex() {
+        if (!touchEventMutex) {
+            touchEventMutex = setTimeout(function () {
+                touchEventMutex = null;
+            }, 5000);
+        }
+    }
+
     evtSource.addEventListener("touch_l1", function (e) {
-        touchLeftPad();
+        console.log(e);
+        if (!touchEventMutex && e.data == 1) {
+            touchLeftPad();
+        }
     }, false);
     evtSource.addEventListener("touch_l2", function (e) {
-        touchLeftPad();
+        console.log(e);
+        if (!touchEventMutex && e.data == 1) {
+            touchLeftPad();
+        }
     }, false);
     evtSource.addEventListener("touch_l3", function (e) {
-        touchLeftPad();
+        console.log(e);
+        if (!touchEventMutex && e.data == 1) {
+            touchLeftPad();
+        }
     }, false);
     evtSource.addEventListener("touch_r1", function (e) {
-        touchRightPad();
+        console.log(e);
+        if (!touchEventMutex && e.data == 1) {
+            touchRightPad();
+        }
     }, false);
     evtSource.addEventListener("touch_r2", function (e) {
-        touchRightPad();
+        console.log(e);
+        if (!touchEventMutex && e.data == 1) {
+            touchRightPad();
+        }
     }, false);
     evtSource.addEventListener("touch_r3", function (e) {
-        touchRightPad();
+        console.log(e);
+        if (!touchEventMutex && e.data == 1) {
+            touchRightPad();
+        }
     }, false);
     evtSource.onerror = function (e) {
+        console.log(e);
         alert("EventSource failed.");
         evtSource.close();
     };
