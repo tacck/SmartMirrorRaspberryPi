@@ -206,7 +206,6 @@
             }
         }
 
-
         @keyframes fadein {
             0% {
                 opacity: 0;
@@ -360,6 +359,7 @@
     var RELOAD_INTERVAL_TIME = 300000;
     var CLOCK_INTERVAL_TIME = 1000;
     var PAGE_CHANGE_DURATION = 1000;
+    var TOUCH_EVENT_MUTEX_TIME = 3000;
 </script>
 
 <script>
@@ -724,6 +724,18 @@
                         }
                 )
                 .then(
+                        function () {
+                            return function () {
+                                var d = new $.Deferred;
+                                setTimeout(function () {
+                                    d.resolve();
+                                }, RELOAD_INTERVAL_TIME);
+
+                                return d.promise();
+                            }
+                        }
+                )
+                .then(
                         fullFadein
                 )
         ;
@@ -759,20 +771,32 @@
                         }
                 )
                 .then(
+                        function () {
+                            return function () {
+                                var d = new $.Deferred;
+                                setTimeout(function () {
+                                    d.resolve();
+                                }, RELOAD_INTERVAL_TIME);
+
+                                return d.promise();
+                            }
+                        }
+                )
+                .then(
                         fullFadein
                 )
         ;
     }
 
     // タッチイベント制御用
-    // タッチ検知から2秒間は次のタッチを受け付けない。
+    // タッチ検知からTOUCH_EVENT_MUTEX_TIMEミリ秒間は次のタッチを受け付けない。
     var touchEventMutex = null;
 
     function setTouchEventMutex() {
         if (!touchEventMutex) {
             touchEventMutex = setTimeout(function () {
                 touchEventMutex = null;
-            }, 5000);
+            }, TOUCH_EVENT_MUTEX_TIME);
         }
     }
 
