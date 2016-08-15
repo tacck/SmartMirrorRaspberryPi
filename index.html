@@ -114,6 +114,20 @@
             bottom: 4vw;
         }
 
+        .text-position-center-bottom {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+        }
+
+        .text-position-center-top {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            text-align: center;
+        }
+
         .text-wrap {
             width: 60vw;
             white-space: nowrap;
@@ -238,111 +252,36 @@
 </head>
 <body>
 
-<header>
-    <div class="row-margin"></div>
-</header>
 <div id="contents" class="content-no-scroll container-fluid">
     <div id="page-1">
-        <div class="row row-2">
-            <div class="col-lg-offset-2 col-lg-2" style="height: 100%;">
-                <div class="font-color-sub font-size-sub text-position-left-bottom">
-                    <sapn id="clock_date">2000/01/01</sapn>
-                </div>
-            </div>
-            <div class="col-lg-6" style="height: 100%;">
-                <div class="font-color-main font-size-2 text-position-right-bottom">
-                    <span id="clock_hour">00</span><span id="clock_time_sep">:</span><span id="clock_min">00</span>
-                </div>
-            </div>
-        </div>
-        <div class="row row-margin">
-            <div class="col-lg-12"></div>
-        </div>
-        <div class="row row-3">
-            <div class="col-lg-offset-1 col-lg-4">
-                <div class="row row-3">
-                    <div class="font-size-3 text-position-right-top"><i id="weather_icon" class="wi wi-na"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-5">
-                <div class="row">
-                    <div class="col-lg-12 row-1">
-                        <div class="label font-color-label font-size-middle text-position-left-top">City</div>
-                        <div class="font-size-sub text-position-right-bottom">
-                            <sapn id="weather_city"></sapn>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 row-1">
-                        <div class="label font-color-label font-size-middle text-position-left-top">Temperature</div>
-                        <div class="font-size-sub text-position-right-bottom"><span id="weather_temp">20.0</span>
-                            &#x2103;
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 row-1">
-                        <div class="label font-color-label font-size-middle text-position-left-top">Humidity</div>
-                        <div class="font-size-sub text-position-right-bottom"><span id="weather_humi">50.0</span> %
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="page-2">
         <div class="row row-1">
-            <div class=" col-lg-offset-1 col-lg-10">
-                <div id="news_title" class="font-color-label font-size-middle"></div>
+            <div class="col-lg-offset-1 col-lg-1" style="height: 100%;">
+                <div class="font-color-main font-size-sub text-position-center-top">
+                    <span id="clock_hour">00</span><span id="clock_time_sep">:</span><span id="clock_min">00</span>
+                    <br/>
+                    <div class="font-color-sub font-size-min">
+                        <sapn id="clock_date">2000/01/01</sapn>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-offset-6 col-lg-1" style="height: 100%;">
+                <div class="row row-1">
+                    <div class="font-size-middle text-position-left-bottom"><i id="weather_icon" class="wi wi-na"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3" style="height: 100%;">
+                <div class="row row-1">
+                    <div class="font-color-sub font-size-sub text-position-left-bottom-sub">
+                        <sapn id="weather_city"></sapn>
+                    </div>
+                    <div class="font-color-sub font-size-sub text-position-left-bottom"><span id="weather_temp">20.0</span> &#x2103;
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="row row-margin">
-            <div class="col-lg-12"></div>
-        </div>
-        <div class="row row-4">
-            <div class="col-lg-offset-2">
-                <div class="row">
-                    <div class="col-lg-10 row-1">
-                        <div id="news_item_1"
-                             class="text-wrap font-color-main font-size-min text-position-left-top"></div>
-                        <div id="news_item_1_time"
-                             class="font-color-label font-size-min text-position-right-bottom-sub"></div>
-                        <div id="news_item_1_pub"
-                             class="font-color-sub font-size-min text-position-left-bottom-sub"></div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-10 row-1">
-                        <div id="news_item_2"
-                             class="text-wrap font-color-main font-size-min text-position-left-top"></div>
-                        <div id="news_item_2_time"
-                             class="font-color-label font-size-min text-position-right-bottom-sub"></div>
-                        <div id="news_item_2_pub"
-                             class="font-color-sub font-size-min text-position-left-bottom-sub"></div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-10 row-1">
-                        <div id="news_item_3"
-                             class="text-wrap font-color-main font-size-min text-position-left-top"></div>
-                        <div id="news_item_3_time"
-                             class="font-color-label font-size-min text-position-right-bottom-sub"></div>
-                        <div id="news_item_3_pub"
-                             class="font-color-sub font-size-min text-position-left-bottom-sub"></div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-10 row-1">
-                        <div id="news_item_4"
-                             class="text-wrap font-color-main font-size-min text-position-left-top"></div>
-                        <div id="news_item_4_time"
-                             class="font-color-label font-size-min text-position-right-bottom-sub"></div>
-                        <div id="news_item_4_pub"
-                             class="font-color-sub font-size-min text-position-left-bottom-sub"></div>
-                    </div>
-                </div>
+        <div class="row row-1">
+            <div class="col-lg-offset-1 col-lg-1" style="height: 100%;">
             </div>
         </div>
     </div>
@@ -687,6 +626,7 @@
     });
 
     hideAll();
+    showPage1();
 </script>
 
 <script>
