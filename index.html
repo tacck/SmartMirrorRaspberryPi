@@ -78,6 +78,10 @@
             line-height: 2vw;
         }
 
+        .font-size-icon {
+            font-size: 6vw;
+        }
+
         .text-position-left-bottom {
             position: absolute;
             left: 0;
@@ -94,6 +98,11 @@
             position: absolute;
             right: 0;
             bottom: 0;
+        }
+
+        .icon-position-right {
+            position: absolute;
+            right: 1vw;
         }
 
         .text-position-right-top {
@@ -255,7 +264,7 @@
 <div id="contents" class="content-no-scroll container-fluid">
     <div id="page-1">
         <div class="row row-1">
-            <div class="col-lg-offset-1 col-lg-1" style="height: 100%;">
+            <div class="col-lg-1" style="height: 100%; margin-left: 1vw; margin-right: -1vw;">
                 <div class="font-color-main font-size-sub text-position-center-top">
                     <span id="clock_hour">00</span><span id="clock_time_sep">:</span><span id="clock_min">00</span>
                     <br/>
@@ -264,18 +273,21 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-offset-6 col-lg-1" style="height: 100%;">
+            <div class="col-lg-offset-8 col-lg-1" style="height: 100%;">
                 <div class="row row-1">
-                    <div class="font-size-middle text-position-left-bottom"><i id="weather_icon" class="wi wi-na"></i>
+                    <div class="font-size-icon icon-position-right"><i id="weather_icon" class="wi wi-na"></i>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3" style="height: 100%;">
+            <div class="col-lg-2" style="height: 100%;">
                 <div class="row row-1">
-                    <div class="font-color-sub font-size-sub text-position-left-bottom-sub">
+                    <div class="font-color-sub font-size-min text-position-left-top">
                         <sapn id="weather_city"></sapn>
-                    </div>
-                    <div class="font-color-sub font-size-sub text-position-left-bottom"><span id="weather_temp">20.0</span> &#x2103;
+                        <br/>
+                        <div class="font-color-sub font-size-sub"><span id="weather_temp">20.0</span> &#x2103;
+                        </div>
+                        <br/>
+                        <div class="text-position-left-bottom"><sapn id="weather_rain_1h">0</sapn> mm / h</div>
                     </div>
                 </div>
             </div>
@@ -289,7 +301,7 @@
 
 <div id="full" class="page-full"></div>
 
-<div style="position: fixed; top: 0;">
+<div style="position: fixed; bottom: 0;">
     <button id="btn-debug-page-change" class="btn btn-info">page change</button>
 </div>
 
@@ -370,6 +382,7 @@
     var weatherTemp = $('#weather_temp');
     var weatherHumi = $('#weather_humi');
     var weatherIcon = $('#weather_icon');
+    var weatherRain = $('#weather_rain_1h');
 
     function setWeatherIcon(code) {
         weatherIcon.removeClass();
@@ -487,6 +500,16 @@
                     weatherCity.text(weather.name);
                     weatherTemp.text(weather.main.temp);
                     weatherHumi.text(weather.main.humidity);
+
+                    var rainVolume = 0;
+                    if (weather.rain) {
+                        if (weather.rain["1h"]) {
+                            rainVolume = weather.rain["1h"];
+                        } else if (weather.rain["3h"]) {
+                            rainVolume = Math.round(weather.rain["3h"] / 3 * 100) / 100;
+                        }
+                    }
+                    weatherRain.text(rainVolume);
 
                     setWeatherIcon(weather.weather[0].id);
                 }
