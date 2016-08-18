@@ -5,9 +5,9 @@ import RPi.GPIO as GPIO
 import time
 
 ### 設定
-PIN_L_1 = 22
-PIN_L_2 = 27
-PIN_L_3 = 17
+PIN_L_1 = 26
+PIN_L_2 = 19
+PIN_L_3 = 13
 PIN_R_1 = 23
 PIN_R_2 = 24
 PIN_R_3 = 18
@@ -28,15 +28,22 @@ status_r_1 = 0
 status_r_2 = 0
 status_r_3 = 0
 
+# heartbeatの調整
+count = 0
+max_count = 10
+
 ### ヘッダ
 print("Content-Type: text/event-stream")
 print("Connection: close")
 print("")
 
 while True:
-    print("event: heartbeat")
-    print("data: alive")
-    print("")
+    count = count + 1
+    if count >= max_count:
+        count = 0
+        print("event: heartbeat")
+        print("data: alive")
+        print("")
 
     # Left
     value_l_1 = GPIO.input(PIN_L_1)
