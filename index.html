@@ -398,8 +398,20 @@
                 </div>
             </div>
         </div>
+        <div class="row row-3"></div>
+        <div class="row-margin"></div>
         <div class="row row-1">
-            <div class="col-lg-offset-1 col-lg-1" style="height: 100%;">
+            <div class="col-lg-offset-2">
+                <div class="row">
+                    <div class="col-lg-10 row-1">
+                        <div id="news_item_1_s"
+                             class="text-wrap font-color-main font-size-min text-position-left-top"></div>
+                        <div id="news_item_1_time_s"
+                             class="font-color-label font-size-min text-position-right-bottom-sub"></div>
+                        <div id="news_item_1_pub_s"
+                             class="font-color-sub font-size-min text-position-left-bottom-sub"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -668,6 +680,9 @@
                     $('#news_item_1').text(ar[0]);
                     $('#news_item_1_pub').text(ar[1]);
                     $('#news_item_1_time').text(news.items[0].pubDate);
+                    $('#news_item_1_s').text(ar[0]);
+                    $('#news_item_1_pub_s').text(ar[1]);
+                    $('#news_item_1_time_s').text(news.items[0].pubDate);
 
                     var ar = news.items[1].title.split(" - ");
                     $('#news_item_2').text(ar[0]);
@@ -807,8 +822,7 @@
         ;
     });
 
-    hideAll();
-    showPage1();
+    showPage3();
 </script>
 
 <script>
